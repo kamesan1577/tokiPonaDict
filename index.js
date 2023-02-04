@@ -19,7 +19,7 @@ app.on('ready', function () {
             width: 800,
             height: 600
         });
-        mainWindow.setMenuBarVisibility(false);
+        mainWindow.setMenuBarVisibility(true);
         mainWindow.loadURL('http://localhost:5000');
     };
     openWindow();

@@ -1,46 +1,50 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "layout.html" %} {% block content %}
 
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <h1>翻訳したい文を入力してください</h1>
-          <input type="text" id="input-toki" onchange="translatePona(this.value)" class="form-control" placeholder="例: sina sitelen e toki o">
-          <script>
-            //文字が入力されたら翻訳して表示する
-            function translatePona(value) {  
-              console.log(value);
-              words_table = {{ words|tojson }};//worlds_table.jsonのデータを取得
-              words = value.split(" ");//入力された値               
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h1>翻訳したい文を入力してください</h1>
+      <input
+        type="text"
+        id="input-toki"
+        onchange="translatePona(this.value)"
+        class="form-control"
+        placeholder="例: sina sitelen e toki o"
+      />
+      <script>
+        //文字が入力されたら翻訳して表示する
+        function translatePona(value) {
+          console.log(value);
+          words_table = {{ words|tojson }};//worlds_table.jsonのデータを取得
+          words = value.split(" ");//入力された値
 
-              //入力された値を単語ごとに分けて翻訳する
-              result = "";
-              for (var i = 0; i < words.length; i++) {
-                wordNoSymbol = words[i].replace(/[\.,:;!?()'"]/g, ""); //語末の記号を削除
-                if (wordNoSymbol in words_table) {
-                  if (words[i].match(/[\.,:;!?()'"]/g) != null) //語末の記号があれば追加する
-                    result += '<span style="color:red;">'+ words_table[wordNoSymbol]["単語"] + '</span>'+ words[i].match(/[\.,:;!?()'"]/g) + " ";
-                  else{ //語末の記号がなければ単語のみ表示する(語末の記号がない場合は、語末の記号を削除した単語と一致するので、語末の記号を削除した単語で翻訳する)
-                    result += '<span style="color:red;">'+ words_table[wordNoSymbol]["単語"] + '</span>'+ " ";
-                  }
-                  document.getElementById("word-meaning-list").innerHTML += '<div class="card"><div class="card-body"><h5 class="card-title">'+ words_table[wordNoSymbol]["単語"] + '</h5><p class="card-text">'+ words_table[wordNoSymbol]["カナ"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["名詞"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["動詞"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["修飾子"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["その他"] + '</p></div></div>';
-                } else {
-                  result += words[i] + " ";
-                }
-                document.getElementById("output-toki").innerHTML = result;
+          //入力された値を単語ごとに分けて翻訳する
+          resultSentence = ""; //翻訳した文章全体
+          resultCard = ""; //翻訳した単語のカード
+          for (var i = 0; i < words.length; i++) {
+            wordNoSymbol = words[i].replace(/[\.,:;!?()'"]/g, ""); //語末の記号を削除
+            if (wordNoSymbol in words_table) {
+              if (words[i].match(/[\.,:;!?()'"]/g) != null) //語末の記号があれば追加する
+                resultSentence += '<span style="color:red;">'+ words_table[wordNoSymbol]["単語"] + '</span>'+ words[i].match(/[\.,:;!?()'"]/g) + " ";
+              else{ //語末の記号がなければ単語のみ表示する(語末の記号がない場合は、語末の記号を削除した単語と一致するので、語末の記号を削除した単語で翻訳する)
+                resultSentence += '<span style="color:red;">'+ words_table[wordNoSymbol]["単語"] + '</span>'+ " ";
               }
-              
+              resultCard += '<div class="card col"><div class="card-body"><h5 class="card-title">'+ '<a href="' +'/' + words_table[wordNoSymbol]["単語"] +'">' +  words_table[wordNoSymbol]["単語"] + '</a></h5><p class="card-text">'+ words_table[wordNoSymbol]["カナ"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["名詞"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["動詞"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["修飾子"] + '</p>' + '<p class="card-text text-truncate">'+ words_table[wordNoSymbol]["その他"] + '</p></div></div>';
+            } else {
+              resultSentence += words[i] + " ";
             }
+            document.getElementById("output-toki").innerHTML = resultSentence;
+            document.getElementById("word-meaning-list").innerHTML = resultCard;
+          }
 
-          </script> 
-          <h1>翻訳結果</h1>
-          <p id="output-toki"></p>
-        </div>
-      </div>
-
-      <div id="word-meaning-list">
-        
-      </div>
+        }
+      </script>
+      <h1>翻訳結果</h1>
+      <p id="output-toki"></p>
     </div>
+  </div>
+
+  <div id="word-meaning-list" class="row row-cols-5"></div>
+</div>
 
 {% endblock %}
