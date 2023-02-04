@@ -1,22 +1,24 @@
 {% extends "layout.html" %}
 {% block content %}
+
     <div class="container">
       <div class="row">
         <div class="col-12">
           <h1>翻訳したい文を入力してください</h1>
           <input type="text" id="input-toki" onchange="translatePona(this.value)" class="form-control" placeholder="例: sina sitelen e toki o">
           <script>
-            function translatePona(value) {
+            //文字が入力されたら翻訳して表示する
+            function translatePona(value) {  
               console.log(value);
-              words_table = {{ words|tojson }};
-              words = value.split(" ");
+              words_table = {{ words|tojson }};//worlds_tableのデータを取得
+              words = value.split(" ");//入力された値
               result = "";
+              //入力された値を単語ごとに分けて翻訳する
               for (var i = 0; i < words.length; i++) {
                 if (words[i] in words_table) {
                   result += '<span style="color:red;">'+ words_table[words[i]]["単語"] + '</span>'+ " ";
                 } else {
                   result += words[i] + " ";
-                  
                 }
                 document.getElementById("output-toki").innerHTML = result;
               }
