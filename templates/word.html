@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
+
 {% block content %}
-    {% if words %}
+    {% if word %}
     <div class="container">
       <div class="row">
-        {% for word in words %}
         <div class="col-12">
           <h1>単語: {{word["単語"] }}</h1>
           <h2>読み方: {{word["カナ"] }}</h2>
@@ -12,7 +12,6 @@
           <h3>修飾子: {{word["修飾子"] }}</h5>
           <h3>その他: {{word["その他"] }}</h6>
         </div>
-        {% endfor %}
       </div>
     </div>
     {% else %}
@@ -25,3 +24,5 @@
     </div>
     {% endif %}
 {% endblock %}
+
+

@@ -4,9 +4,15 @@ const {
 const electron = require('electron');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+
 let mainWindow;
 
 app.on('ready', function () {
+    PythonShell.run('./scraper.py', null, function (err) { 
+        if (err) throw err;
+        console.log('saved');
+    });
+
     PythonShell.run('./app.py');
     const openWindow = function () {
         mainWindow = new BrowserWindow({
@@ -18,3 +24,7 @@ app.on('ready', function () {
     };
     openWindow();
 });
+app.on('window-all-closed', function () {
+    app.quit();
+}
+);
