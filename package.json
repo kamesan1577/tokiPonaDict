@@ -9,8 +9,37 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "build": {
+    "appId": "com.electron.tokiponadict",
+    "productName": "tokiponadict",
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "icon": "assets/sitelen_pona.png",
+      "target": "nsis"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "files": [
+      "./assets",
+      "./static/",
+      "./templates/",
+      "./app.py",
+      "./scrape.py",
+      "./index.js",
+      "./package.json",
+      "./package-lock.json",
+      "./node_modules/**/*"
+    ]
+    
+  },
   "devDependencies": {
-    "electron": "^22.2.0"
+    "electron": "^22.2.0",
+    "electron-builder": "^23.6.0",
+    "electron-packager": "^17.1.1"
   },
   "dependencies": {
     "python-shell": "^3.0.1",

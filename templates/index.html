@@ -24,19 +24,22 @@
           for (var i = 0; i < words.length; i++) {
             wordNoSymbol = words[i].replace(/[\.,:;!?()'"]/g, ""); //語末の記号を削除
             if (wordNoSymbol in words_table) {
-              if (words[i].match(/[\.,:;!?()'"]/g) != null) //語末の記号があれば追加する
-                resultSentence += '<span style="color:red;">'+ words_table[wordNoSymbol]["単語"] + '</span>'+ words[i].match(/[\.,:;!?()'"]/g) + " ";
+              if (words[i].match(/[\.,:;!?()]/g) != null) //語末の記号があれば追加する
+                resultSentence += '<span style="color:red;">'+ words_table[wordNoSymbol]["単語"] + '</span>'+ words[i].match(/[\.,:;!?()]/g) + " ";
               else{ //語末の記号がなければ単語のみ表示する(語末の記号がない場合は、語末の記号を削除した単語と一致するので、語末の記号を削除した単語で翻訳する)
                 resultSentence += '<span style="color:red;">'+ words_table[wordNoSymbol]["単語"] + '</span>'+ " ";
               }
               resultCard += '<div class="card col"><div class="card-body"><h5 class="card-title">'+ '<a href="' +'/' + words_table[wordNoSymbol]["単語"] +'">' +  words_table[wordNoSymbol]["単語"] + '</a></h5><p class="card-text">'+ words_table[wordNoSymbol]["カナ"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["名詞"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["動詞"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["修飾子"] + '</p>' + '<p class="card-text text-truncate">'+ words_table[wordNoSymbol]["その他"] + '</p></div></div>';
             } else {
-              resultSentence += words[i] + " ";
+              resultSentence += xss_escape(words[i]) + " ";
             }
             document.getElementById("output-toki").innerHTML = resultSentence;
             document.getElementById("word-meaning-list").innerHTML = resultCard;
           }
 
+        }
+        function xss_escape(s){
+          return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
       </script>
       <h1>翻訳結果</h1>
