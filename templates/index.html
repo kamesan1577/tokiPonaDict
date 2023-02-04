@@ -3,24 +3,27 @@
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <!-- <h1>翻訳したい文を入力してください</h1>
+          <h1>翻訳したい文を入力してください</h1>
           <input type="text" id="input-toki" onchange="translatePona(this.value)" class="form-control" placeholder="例: sina sitelen e toki o">
           <script>
             function translatePona(value) {
               console.log(value);
-              words_table = JSON.parse({{ words_table }});
+              words_table = {{ words|tojson }};
               words = value.split(" ");
               result = "";
               for (var i = 0; i < words.length; i++) {
                 if (words[i] in words_table) {
-                  result += words_table[words[i]] + " ";
+                  result += '<span style="color:red;">'+ words_table[words[i]]["単語"] + '</span>'+ " ";
                 } else {
                   result += words[i] + " ";
+                  
                 }
+                document.getElementById("output-toki").innerHTML = result;
               }
-              document.getElementById("output-toki").innerHTML = result; 
+              
             }
-          </script> -->
+
+          </script> 
           <h1>翻訳結果</h1>
           <p id="output-toki"></p>
         </div>
