@@ -1,27 +1,30 @@
 {% extends "layout.html" %}
 {% block content %}
-    {% if words %}
-    <div class="container">
-      <div class="row">
-        {% for word in words %}
-        <div class="col-12">
-          <h1>単語: {{word["単語"] }}</h1>
-          <h2>読み方: {{word["カナ"] }}</h2>
-          <h3>名詞: {{word["名詞"] }}</h3>
-          <h3>動詞: {{word["動詞"] }}</h4>
-          <h3>修飾子: {{word["修飾子"] }}</h5>
-          <h3>その他: {{word["その他"] }}</h6>
-        </div>
-        {% endfor %}
-      </div>
-    </div>
-    {% else %}
     <div class="container">
       <div class="row">
         <div class="col-12">
-          <h1>単語がありません</h1>
+          <!-- <h1>翻訳したい文を入力してください</h1>
+          <input type="text" id="input-toki" onchange="translatePona(this.value)" class="form-control" placeholder="例: sina sitelen e toki o">
+          <script>
+            function translatePona(value) {
+              console.log(value);
+              words_table = JSON.parse({{ words_table }});
+              words = value.split(" ");
+              result = "";
+              for (var i = 0; i < words.length; i++) {
+                if (words[i] in words_table) {
+                  result += words_table[words[i]] + " ";
+                } else {
+                  result += words[i] + " ";
+                }
+              }
+              document.getElementById("output-toki").innerHTML = result; 
+            }
+          </script> -->
+          <h1>翻訳結果</h1>
+          <p id="output-toki"></p>
         </div>
       </div>
     </div>
-    {% endif %}
+
 {% endblock %}

@@ -23,8 +23,21 @@ app.on('ready', function () {
         mainWindow.loadURL('http://localhost:5000');
     };
     openWindow();
+    mainWindow.on('closed', function () {
+        mainWindow = null;
+    });
 });
+
+// ショートカットキーの設定
+// app.whenReady().then(() => {
+//     electron.globalShortcut.register('CommandOrControl+Shift+Space', () => {
+//         console.log('CommandOrControl+T+Space is pressed')
+//     })
+// });
+
 app.on('window-all-closed', function () {
-    app.quit();
+    if (process.platform != 'darwin') {
+        app.quit();
+}
 }
 );
