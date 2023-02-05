@@ -65,6 +65,10 @@
         trigger: "hover",
       });
     });
+    //実行されるたびに今あるpopoverが消えるようにする
+    for (var i = 0; i < document.querySelectorAll(".popover").length; i++) {
+      document.querySelectorAll(".popover")[i].hidden = true;
+    }
   }
   initializePopovers();
 </script>
