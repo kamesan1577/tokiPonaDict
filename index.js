@@ -57,7 +57,11 @@ app.on('ready', function () {
             width: 800,
             height: 600,
             webPreferences: {
-                spellcheck: false
+                spellcheck: false,
+                nodeIntegration: false,
+                contextIsolation: true,
+                enableRemoteModule: true,
+                preload: __dirname + '/preload.js'
             }
         });
         mainWindow.setMenuBarVisibility(true);
@@ -71,10 +75,13 @@ app.on('ready', function () {
 
 
 
-// ショートカットキーの設定
+// //ショートカットキーの設定
 // app.whenReady().then(() => {
 //     electron.globalShortcut.register('CommandOrControl+Shift+Space', () => {
 //         console.log('CommandOrControl+T+Space is pressed')
+//         electron.ipcMain.handle('send', () => {
+//             return electron.clipboard.readText();
+//         });
 //     })
 // });
 
