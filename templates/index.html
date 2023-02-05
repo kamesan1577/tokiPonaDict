@@ -11,12 +11,16 @@
         class="form-control"
         placeholder="例: sina sitelen e toki o"
       />
+
       <script>
         //文字が入力されたら翻訳して表示する
         function translatePona(value) {
           console.log(value);
           words_table = {{ words|tojson }};//worlds_table.jsonのデータを取得
           words = value.split(" ");//入力された値
+
+        sentence = document.getElementById("output-toki");
+        card = document.getElementById("word-meaning-list");
 
           //入力された値を単語ごとに分けて翻訳する
           resultSentence = ""; //翻訳した文章全体
@@ -29,16 +33,17 @@
               else{ //語末の記号がなければ単語のみ表示する(語末の記号がない場合は、語末の記号を削除した単語と一致するので、語末の記号を削除した単語で翻訳する)
                 resultSentence += '<span style="color:red;">'+ words_table[wordNoSymbol]["単語"] + '</span>'+ " ";
               }
-              resultCard += '<div class="card col"><div class="card-body"><h5 class="card-title">'+ '<a href="' +'/' + words_table[wordNoSymbol]["単語"] +'">' +  words_table[wordNoSymbol]["単語"] + '</a></h5><p class="card-text">'+ words_table[wordNoSymbol]["カナ"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["名詞"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["動詞"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["修飾子"] + '</p>' + '<p class="card-text text-truncate">'+ words_table[wordNoSymbol]["その他"] + '</p></div></div>';
+              cardText = '<p class="card-text">'+ words_table[wordNoSymbol]["カナ"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["名詞"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["動詞"] + '</p>' + '<p class="card-text">'+ words_table[wordNoSymbol]["修飾子"] + '</p>' + '<p class="card-text text-truncate" >'+ words_table[wordNoSymbol]["その他"] + '</p>';
+              resultCard += '<div class="card col" title="'+words_table[wordNoSymbol]["単語"]+'"  data-bs-toggle="popover" data-bs-placement="bottom" data-bs-html="true" data-bs-content="' + words_table[wordNoSymbol]["カナ"] + '<br>' + words_table[wordNoSymbol]["名詞"] + '<br>' + words_table[wordNoSymbol]["動詞"] + '<br>' + words_table[wordNoSymbol]["修飾子"] + '<br>' + words_table[wordNoSymbol]["その他"] + '"><div class="card-body"><h5 class="card-title">' + '<a href="' +'/' + words_table[wordNoSymbol]["単語"] +'">' +  words_table[wordNoSymbol]["単語"] + '</a></h5>'+cardText+'</div></div>';
             } else {
-              resultSentence += xss_escape(words[i]) + " ";
+              resultSentence += xssEscape(words[i]) + " ";
             }
-            document.getElementById("output-toki").innerHTML = resultSentence;
-            document.getElementById("word-meaning-list").innerHTML = resultCard;
+            sentence.innerHTML = resultSentence;
+            card.innerHTML = resultCard;
           }
-
+          initializePopovers();
         }
-        function xss_escape(s){
+        function xssEscape(s){
           return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
         }
       </script>
@@ -49,5 +54,18 @@
 
   <div id="word-meaning-list" class="row row-cols-5"></div>
 </div>
-
+<script>
+  function initializePopovers() {
+    //popper.jsの初期化
+    var popoverTriggerList = [].slice.call(
+      document.querySelectorAll('[data-bs-toggle="popover"]')
+    );
+    var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+      return new bootstrap.Popover(popoverTriggerEl, {
+        trigger: "hover",
+      });
+    });
+  }
+  initializePopovers();
+</script>
 {% endblock %}
