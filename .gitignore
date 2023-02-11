@@ -131,3 +131,6 @@ __pycache__/
 
 # 辞書データ
 words_table.json
+
+# Pyinstallerのビルドデータ
+build/

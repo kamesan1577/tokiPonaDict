@@ -13,10 +13,11 @@
     "appId": "com.electron.tokiponadict",
     "productName": "tokiponadict",
     "directories": {
+      "buildResources": "assets",
       "output": "dist"
     },
     "win": {
-      "icon": "assets/sitelen_pona.png",
+      "icon": "assets/sitelen_pona.*",
       "target": "nsis"
     },
     "nsis": {
@@ -33,8 +34,16 @@
       "./package.json",
       "./package-lock.json",
       "./node_modules/**/*"
+    ],
+    "extraFiles": [
+      {
+        "from": "./backend/",
+        "to": "backend/",
+        "filter": [
+          "**/*"
+        ]
+      }
     ]
-    
   },
   "devDependencies": {
     "electron": "^22.2.0",

@@ -2,8 +2,14 @@ const {
     PythonShell
 } = require('python-shell');
 const electron = require('electron');
+const {
+    exec
+} = require('child_process');
 const app = electron.app;
 const BrowserWindow = electron.BrowserWindow;
+let backendApp = path.join(process.cwd(), "./backend/dist/app.exe");
+let backendScraper = path.join(process.cwd(), "./backend/dist/scraper.exe");
+var execfile = require('child_process').execFile;
 
 let mainWindow;
 
@@ -19,7 +25,8 @@ const template = electron.Menu.buildFromTemplate([{
             role: "quit",
             label: "終了"
         }
-    ],}, {
+    ],
+}, {
 
     label: 'ヘルプ',
     submenu: [{
@@ -46,12 +53,41 @@ const template = electron.Menu.buildFromTemplate([{
 electron.Menu.setApplicationMenu(template);
 
 app.on('ready', function () {
-    PythonShell.run('./scraper.py', null, function (err) {
-        if (err) throw err;
-        console.log('saved');
-    });
 
-    PythonShell.run('./app.py');
+    execfile(
+        backendScraper, {
+            windowsHide: true
+        },
+        (error, stdout, stderr) => {
+            if (error) {
+                throw error;
+            }
+            if (stdout) {
+                console.log(stdout);
+            }
+            if (stderr) {
+                console.log(stderr);
+            }
+        }
+    );
+
+    execfile(
+        backendApp, {
+            windowsHide: true
+        },
+        (error, stdout, stderr) => {
+            if (error) {
+                throw error;
+            }
+            if (stdout) {
+                console.log(stdout);
+            }
+            if (stderr) {
+                console.log(stderr);
+            }
+        }
+    );
+
     const openWindow = function () {
         mainWindow = new BrowserWindow({
             width: 800,
@@ -70,6 +106,23 @@ app.on('ready', function () {
     openWindow();
     mainWindow.on('closed', function () {
         mainWindow = null;
+        exec("taskkill /f /t /im app.exe", (err, stdout, stderr) => {
+            if (err) {
+                console.log(err)
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+            console.log(`stderr: ${stderr}`);
+        });
+        exec("taskkill /f /t /im scraper.exe", (err, stdout, stderr) => {
+            if (err) {
+                console.log(err)
+                return;
+            }
+            console.log(`stdout: ${stdout}`);
+            console.log(`stderr: ${stderr}`);
+        }
+        );
     });
 });
 
